@@ -18,11 +18,13 @@ export function Nav() {
 
     return (
         <>
-            <div className='max-md:flex hidden absolute w-full px-4 bg-background h-16 items-center'>
-                <GoTextLogo className='w-12' />
-                <span className='text-sm ml-2 -translate-y-0.5 text-muted-foreground'>
-                    - Your own link shortener
-                </span>
+            <div className='max-md:flex hidden fixed top-0 w-full px-4 bg-background h-16 items-center'>
+                <Link href='/dashboard' className='flex'>
+                    <GoTextLogo className='w-12' />
+                    <span className='text-sm ml-2 -translate-y-0.5 text-muted-foreground'>
+                        - Your own link shortener
+                    </span>
+                </Link>
             </div>
             <div
                 className={`
@@ -32,7 +34,9 @@ export function Nav() {
             `}
             >
                 <div className='flex gap-6 items-center'>
-                    <GoTextLogo className='w-12 ml-6 hidden md:block' />
+                    <Link href='/dashboard'>
+                        <GoTextLogo className='w-12 ml-6 hidden md:block' />
+                    </Link>
                     <div className='flex gap-2 items-center'>
                         {navLinks.map((link) => {
                             return (

@@ -1,4 +1,4 @@
-import { linkRoutes } from "@/lib/api/routes/links.routes";
+import { linkRoutes } from "@/app/api/go/routes/links.routes";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 

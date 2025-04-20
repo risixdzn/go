@@ -1,4 +1,4 @@
-import { shortenLinkSchema } from "@/lib/schemas/shortenLinkSchema";
+import { shortenLinkSchema } from "@/lib/schemas/linkSchemas";
 import { Hono } from "hono";
 import { shortenHandler } from "../controllers/shortenHandler";
 

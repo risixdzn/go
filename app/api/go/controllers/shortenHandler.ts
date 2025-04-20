@@ -1,9 +1,9 @@
-import { shortenLinkSchema } from "@/lib/schemas/shortenLinkSchema";
+import { shortenLinkSchema } from "@/lib/schemas/linkSchemas";
 import { Context } from "hono";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { createLink, generateSlug, getUserLinkByUrl } from "../services/links";
+import { createLink, generateSlug } from "../services/links";
 
 export async function shortenHandler({
     data,
@@ -13,21 +13,14 @@ export async function shortenHandler({
     ctx: Context;
 }) {
     const session = await auth.api.getSession({
-        headers: await headers(), // you need to pass the headers object.
+        headers: await headers(),
     });
 
     if (!session) {
         return ctx.json({ error: "Unauthorized" }, 401);
     }
 
-    const existingQuery = getUserLinkByUrl({ url: data.url, userId: session.user.id });
-    const generateSlugAsync = generateSlug(5);
-
-    const [existing, slug] = await Promise.all([existingQuery, generateSlugAsync]);
-
-    if (existing) {
-        return ctx.json(existing);
-    }
+    const slug = await generateSlug(5);
 
     const created = await createLink({
         url: data.url,
