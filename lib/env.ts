@@ -8,6 +8,8 @@ const envSchema = z.object({
 
     SIGNUP_MODE: z.enum(["public", "restricted"]),
     WHITELIST_EMAILS: z.string().optional(),
+
+    NEXT_PUBLIC_APP_URL: z.string().url(),
 });
 
 export const env = envSchema.parse(process.env);

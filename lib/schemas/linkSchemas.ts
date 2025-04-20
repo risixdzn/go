@@ -12,3 +12,7 @@ export const linkSchema = z.object({
 export const shortenLinkSchema = z.object({
     url: z.string().url(),
 });
+
+export const getLinkSchema = z.object({
+    slug: z.string(),
+});

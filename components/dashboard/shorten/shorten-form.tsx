@@ -37,7 +37,7 @@ export function ShortenForm() {
         setIsLoading(true);
         try {
             const normalizedUrl = addHttpsIfMissing(values.url);
-            const { data } = await axios.post<z.infer<typeof linkSchema>>("/api/go/link", {
+            const { data } = await axios.post<z.infer<typeof linkSchema>>("/api/go/links", {
                 ...values,
                 url: normalizedUrl,
             });

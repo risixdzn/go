@@ -1,10 +1,9 @@
 import prisma from "@/lib/db";
 
-export async function getUserLinkBySlug({ slug, userId }: { slug: string; userId: string }) {
+export async function getLinkBySlug({ slug }: { slug: string }) {
     return await prisma.link.findUnique({
         where: {
             slug,
-            userId,
         },
     });
 }
@@ -13,6 +12,14 @@ export async function getUserLinkByUrl({ url, userId }: { url: string; userId: s
     return await prisma.link.findFirst({
         where: {
             url,
+            userId,
+        },
+    });
+}
+
+export async function getUserLinks({ userId }: { userId: string }) {
+    return await prisma.link.findMany({
+        where: {
             userId,
         },
     });

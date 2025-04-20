@@ -3,7 +3,7 @@ import { Context } from "hono";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { createLink, generateSlug } from "../services/links";
+import { createLink, generateSlug } from "../../services/links";
 
 export async function shortenHandler({
     data,
