@@ -133,3 +133,13 @@
         font-family: var(--font-sans);
     }
 }
+
+::-moz-selection {
+    color: var(--color-background);
+    background: var(--color-foreground);
+}
+
+::selection {
+    color: var(--color-background);
+    background: var(--color-foreground);
+}

@@ -1,4 +1,6 @@
 import prisma from "@/lib/db";
+import { editLinkPatchSchema } from "@/lib/schemas/linkSchemas";
+import { z } from "zod";
 
 export async function getLinkBySlug({ slug }: { slug: string }) {
     return await prisma.link.findUnique({
@@ -40,6 +42,21 @@ export async function createLink({
             slug,
             userId,
         },
+    });
+}
+
+export async function updateLinkBySlug({
+    data,
+    slug,
+}: {
+    data: z.infer<typeof editLinkPatchSchema>;
+    slug: string;
+}) {
+    return await prisma.link.update({
+        where: {
+            slug,
+        },
+        data,
     });
 }
 

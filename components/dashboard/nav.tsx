@@ -40,7 +40,7 @@ export function Nav() {
                     <div className='flex gap-2 items-center'>
                         {navLinks.map((link) => {
                             return (
-                                <Link key={link.href} href={link.href}>
+                                <Link prefetch key={link.href} href={link.href}>
                                     <Button
                                         className='rounded-full'
                                         size='lg'

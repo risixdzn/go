@@ -37,7 +37,7 @@ export default async function LinkPage({ params }: { params: Promise<{ slug: str
                         : "We couldn't find the link you were looking for."}
                 </p>
             </div>
-            {data && <LinkCard link={data.data} />}
+            {data && <LinkCard link={data.data} allowEditing />}
         </div>
     );
 }
