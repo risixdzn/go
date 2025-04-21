@@ -24,6 +24,9 @@ export async function getUserLinks({ userId }: { userId: string }) {
         where: {
             userId,
         },
+        orderBy: {
+            createdAt: "desc",
+        },
     });
 }
 
@@ -60,6 +63,14 @@ export async function updateLinkBySlug({
     });
 }
 
+export async function deleteLinkBySlug({ slug }: { slug: string }) {
+    return await prisma.link.delete({
+        where: {
+            slug,
+        },
+    });
+}
+
 export async function generateSlug(length: number) {
     let result = "";
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -75,7 +86,7 @@ export async function generateSlug(length: number) {
     });
 
     if (existing) {
-        return generateSlug(length);
+        return generateSlug(length + 1);
     }
 
     return result;

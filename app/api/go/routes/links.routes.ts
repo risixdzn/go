@@ -4,6 +4,7 @@ import { shortenHandler } from "../controllers/links/shortenHandler";
 import { getLinkHandler } from "../controllers/links/getLinkHandler";
 import { getAllLinks } from "../controllers/links/getAllLinks";
 import { editLinkHandler } from "../controllers/links/editLinkHandler";
+import { deleteLinkHandler } from "../controllers/links/deleteLinkHandler";
 
 export const linkRoutes = new Hono();
 
@@ -25,4 +26,9 @@ linkRoutes.patch("/:slug", async (c) => {
     const { slug } = getLinkSchema.parse(c.req.param());
     const body = editLinkPatchSchema.parse(await c.req.json());
     return await editLinkHandler({ data: body, slug, ctx: c });
+});
+
+linkRoutes.delete("/:slug", async (c) => {
+    const params = getLinkSchema.parse(c.req.param());
+    return deleteLinkHandler({ data: params, ctx: c });
 });

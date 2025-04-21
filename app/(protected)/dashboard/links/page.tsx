@@ -21,7 +21,7 @@ export default async function LinksPage() {
     );
 
     return (
-        <div className='mt-20 md:mt-24 md:py-10 space-y-6'>
+        <div className='mt-20 md:mt-24 md:py-10 space-y-6 pb-22'>
             <div>
                 <h2 className='text-2xl md:text-3xl font-title font-semibold'>My links</h2>
                 <p className='text-muted-foreground'>See all your shortened links.</p>
@@ -35,7 +35,7 @@ export default async function LinksPage() {
                             key={linkData.slug}
                             href={`/dashboard/links/${linkData.slug}`}
                         >
-                            <LinkCard link={linkData} />
+                            <LinkCard link={linkData} hoverAnim />
                         </Link>
                     ))}
             </div>

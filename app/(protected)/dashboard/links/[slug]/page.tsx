@@ -1,4 +1,5 @@
 import { BackButton } from "@/components/dashboard/back-button";
+import { DeleteLinkDialog } from "@/components/dashboard/links/delete-link-dialog";
 import { LinkCard } from "@/components/dashboard/links/link-card";
 import { env } from "@/lib/env";
 import { linkSchema } from "@/lib/schemas/linkSchemas";
@@ -27,15 +28,18 @@ export default async function LinkPage({ params }: { params: Promise<{ slug: str
             <BackButton variant={"link"} className='!p-0 h-auto'>
                 <ArrowLeft /> Back
             </BackButton>
-            <div>
-                <h2 className='text-2xl md:text-3xl font-title font-semibold'>
-                    {!error ? "Your link" : "Oops..."}
-                </h2>
-                <p className='text-muted-foreground'>
-                    {!error
-                        ? "See the details of the shortened link"
-                        : "We couldn't find the link you were looking for."}
-                </p>
+            <div className='flex w-full justify-between items-center'>
+                <div>
+                    <h2 className='text-2xl md:text-3xl font-title font-semibold'>
+                        {!error ? "Your link" : "Oops..."}
+                    </h2>
+                    <p className='text-muted-foreground'>
+                        {!error
+                            ? "See the details of the shortened link"
+                            : "We couldn't find the link you were looking for."}
+                    </p>
+                </div>
+                {data && <DeleteLinkDialog slug={data.data.slug} />}
             </div>
             {data && <LinkCard link={data.data} allowEditing />}
         </div>

@@ -17,6 +17,10 @@ export const getLinkSchema = z.object({
     slug: z.string(),
 });
 
+export const deleteLinkSchema = z.object({
+    slug: z.string(),
+});
+
 export const editLinkSchema = z.object({
     url: z.string().url(),
     slug: z
