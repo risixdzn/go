@@ -104,6 +104,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
                             disabled={!formState.isValid || isLoading}
                             type='submit'
                             className='w-full'
+                            size={"lg"}
                         >
                             Login {isLoading && <Loader2 className='animate-spin size-4' />}
                         </Button>

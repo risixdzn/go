@@ -27,6 +27,7 @@ export function DeleteLinkDialog({ slug }: { slug: string }) {
             await axios.delete(`/api/go/links/${slug}`);
             toast.success("Link deleted!");
             router.push(`/dashboard/links`);
+            router.refresh();
         } catch (e) {
             console.error(e);
         } finally {

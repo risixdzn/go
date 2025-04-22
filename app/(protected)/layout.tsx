@@ -3,6 +3,7 @@ import { Geist_Mono, DM_Sans, EB_Garamond } from "next/font/google";
 import "../globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Nav } from "@/components/dashboard/nav";
+import { QueryClientWrapper } from "@/lib/query-client";
 
 const DMSans = DM_Sans({
     variable: "--font-dm-sans",
@@ -30,14 +31,16 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='en'>
-            <body
-                className={`${geistMono.variable} ${DMSans.variable} ${ebGaramond.variable} antialiased font-sans`}
-            >
-                <Nav />
-                <main className='w-full max-w-2xl mx-auto px-4'>{children}</main>
-                <Toaster />
-            </body>
-        </html>
+        <QueryClientWrapper>
+            <html lang='en'>
+                <body
+                    className={`${geistMono.variable} ${DMSans.variable} ${ebGaramond.variable} antialiased font-sans`}
+                >
+                    <Nav />
+                    <main className='w-full max-w-2xl mx-auto px-4'>{children}</main>
+                    <Toaster />
+                </body>
+            </html>
+        </QueryClientWrapper>
     );
 }
