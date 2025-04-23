@@ -15,25 +15,25 @@ export async function collectClick({
 }) {
     const geo = getGeo(ctx);
 
-    if (!geo.ip) return;
+    if (geo && geo.ip) {
+        const cacheKey = linkClickCachekey(geo.ip, linkId);
 
-    const cacheKey = linkClickCachekey(geo.ip, linkId);
+        if (await redis.exists(cacheKey)) return;
 
-    if (await redis.exists(cacheKey)) return;
+        await redis.set(cacheKey, 1, "EX", 60);
 
-    await redis.set(cacheKey, 1, "EX", 60);
-
-    return await prisma.click.create({
-        data: {
-            linkId,
-            timestamp: new Date(),
-            ip: geo.ip,
-            country: geo.country,
-            region: geo.region,
-            city: geo.city,
-            userAgent: data.userAgent,
-            utm_source: data.utm_source,
-            utm_campaign: data.utm_campaign,
-        },
-    });
+        await prisma.click.create({
+            data: {
+                linkId,
+                timestamp: new Date(),
+                ip: geo.ip,
+                country: geo.country,
+                region: geo.region,
+                city: geo.city,
+                userAgent: data.userAgent,
+                utm_source: data.utm_source,
+                utm_campaign: data.utm_campaign,
+            },
+        });
+    }
 }
