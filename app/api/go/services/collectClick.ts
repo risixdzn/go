@@ -1,22 +1,23 @@
 import prisma from "@/lib/db";
 import { Context } from "hono";
-import { getGeo } from "../helpers/getGeo";
 import { redis } from "@/lib/redis/connection";
 import { linkClickCachekey } from "../helpers/cache";
+import { getGeo } from "hono-geo-middleware";
 
 export async function collectClick({
     data,
     ctx,
     linkId,
 }: {
-    data: { ip?: string; userAgent: string | null; utm_source?: string; utm_campaign?: string };
+    data: { userAgent: string | null; utm_source?: string; utm_campaign?: string };
     ctx: Context;
     linkId: string;
 }) {
-    if (!data.ip) return;
-
     const geo = getGeo(ctx);
-    const cacheKey = linkClickCachekey(data.ip, linkId);
+
+    if (!geo.ip) return;
+
+    const cacheKey = linkClickCachekey(geo.ip, linkId);
 
     if (await redis.exists(cacheKey)) return;
 
@@ -26,7 +27,7 @@ export async function collectClick({
         data: {
             linkId,
             timestamp: new Date(),
-            ip: data.ip,
+            ip: geo.ip,
             country: geo.country,
             region: geo.region,
             city: geo.city,
