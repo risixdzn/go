@@ -40,7 +40,7 @@ export async function editLinkHandler({
         }
     }
 
-    const updated = await updateLinkBySlug({ data, slug });
+    const updated = await updateLinkBySlug({ data, slug, userId: session.user.id });
 
     return ctx.json(updated);
 }

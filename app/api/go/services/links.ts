@@ -1,13 +1,26 @@
 import prisma from "@/lib/db";
-import { editLinkPatchSchema } from "@/lib/schemas/linkSchemas";
+import { editLinkPatchSchema, linkSchema, userLinksSchema } from "@/lib/schemas/linkSchemas";
 import { z } from "zod";
+import { CACHE_TTL, linkSlugCachekey, userLinksCachekey } from "../helpers/cache";
+import { redis } from "@/lib/redis/connection";
 
 export async function getLinkBySlug({ slug }: { slug: string }) {
-    return await prisma.link.findUnique({
-        where: {
-            slug,
-        },
-    });
+    const key = linkSlugCachekey(slug);
+    const cached = await redis.get(key);
+
+    if (cached) return linkSchema.parse(JSON.parse(cached));
+
+    const link = linkSchema.parse(
+        await prisma.link.findUnique({
+            where: {
+                slug,
+            },
+        })
+    );
+
+    await redis.set(key, JSON.stringify(link), "EX", CACHE_TTL);
+
+    return link;
 }
 
 export async function getUserLinkByUrl({ url, userId }: { url: string; userId: string }) {
@@ -20,14 +33,25 @@ export async function getUserLinkByUrl({ url, userId }: { url: string; userId: s
 }
 
 export async function getUserLinks({ userId }: { userId: string }) {
-    return await prisma.link.findMany({
-        where: {
-            userId,
-        },
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
+    const key = userLinksCachekey(userId);
+    const cached = await redis.get(key);
+
+    if (cached) return userLinksSchema.parse(JSON.parse(cached));
+
+    const links = userLinksSchema.parse(
+        await prisma.link.findMany({
+            where: {
+                userId,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        })
+    );
+
+    await redis.set(key, JSON.stringify(links), "EX", CACHE_TTL);
+
+    return links;
 }
 
 export async function createLink({
@@ -39,6 +63,8 @@ export async function createLink({
     slug: string;
     userId: string;
 }) {
+    await redis.del(userLinksCachekey(userId));
+
     return await prisma.link.create({
         data: {
             url,
@@ -50,11 +76,16 @@ export async function createLink({
 
 export async function updateLinkBySlug({
     data,
+    userId,
     slug,
 }: {
     data: z.infer<typeof editLinkPatchSchema>;
+    userId: string;
     slug: string;
 }) {
+    await redis.del(linkSlugCachekey(slug));
+    await redis.del(userLinksCachekey(userId));
+
     return await prisma.link.update({
         where: {
             slug,
@@ -64,6 +95,8 @@ export async function updateLinkBySlug({
 }
 
 export async function deleteLinkBySlug({ slug }: { slug: string }) {
+    await redis.del(linkSlugCachekey(slug));
+
     return await prisma.link.delete({
         where: {
             slug,

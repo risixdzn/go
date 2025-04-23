@@ -2,7 +2,7 @@ import { Context } from "hono";
 import { z } from "zod";
 import { getLinkBySlug } from "../services/links";
 import { redirectQuery, redirectSchema } from "@/lib/schemas/redirectSchema";
-import { collectClick } from "../services/collectClick";
+import { collectClick } from "../services/collect";
 
 export async function redirectHandler({
     data,
