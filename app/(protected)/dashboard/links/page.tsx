@@ -35,7 +35,7 @@ export default async function LinksPage() {
                             key={linkData.slug}
                             href={`/dashboard/links/${linkData.slug}`}
                         >
-                            <LinkCard link={linkData} hoverAnim />
+                            <LinkCard link={linkData} hoverAnim allowOpenNewTab />
                         </Link>
                     ))}
             </div>

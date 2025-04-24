@@ -4,6 +4,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { getLinkBySlug, updateLinkBySlug } from "../../services/links";
+import { tryCatch } from "@/lib/utils";
 
 export async function editLinkHandler({
     slug,
@@ -33,7 +34,7 @@ export async function editLinkHandler({
     }
 
     if (data.slug) {
-        const existing = await getLinkBySlug({ slug: data.slug });
+        const { data: existing } = await tryCatch(getLinkBySlug({ slug: data.slug }));
 
         if (existing) {
             return ctx.json({ error: "Slug already in use" }, 400);

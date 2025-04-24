@@ -25,7 +25,7 @@ export async function redirectHandler({
         utm_campaign: metadata.utm_campaign,
     };
 
-    await collectClick({ data: clickData, linkId: link.id, ctx });
+    collectClick({ data: clickData, linkId: link.id, ctx });
 
     return ctx.redirect(link.url);
 }

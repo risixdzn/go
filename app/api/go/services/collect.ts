@@ -16,7 +16,7 @@ export async function collectClick({
     const metadata = getMetadata(ctx);
 
     if (metadata.ip) {
-        const cacheKey = linkClickCachekey("177.189.14.154", linkId);
+        const cacheKey = linkClickCachekey(metadata.ip, linkId);
 
         if (await redis.exists(cacheKey)) return;
 

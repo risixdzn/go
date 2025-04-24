@@ -10,6 +10,8 @@ export async function getLinkBySlug({ slug }: { slug: string }) {
 
     if (cached) return linkSchema.parse(JSON.parse(cached));
 
+    console.log(slug);
+
     const link = linkSchema.parse(
         await prisma.link.findUnique({
             where: {
@@ -94,8 +96,9 @@ export async function updateLinkBySlug({
     });
 }
 
-export async function deleteLinkBySlug({ slug }: { slug: string }) {
+export async function deleteLinkBySlug({ slug, userId }: { slug: string; userId: string }) {
     await redis.del(linkSlugCachekey(slug));
+    await redis.del(userLinksCachekey(userId));
 
     return await prisma.link.delete({
         where: {
