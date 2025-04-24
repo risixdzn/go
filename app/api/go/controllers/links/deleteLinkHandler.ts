@@ -30,7 +30,7 @@ export async function deleteLinkHandler({
         return ctx.json({ error: "Unauthorized" }, 401);
     }
 
-    await deleteLinkBySlug({ slug: data.slug });
+    await deleteLinkBySlug({ slug: data.slug, userId: session.user.id });
 
     return ctx.json({}, 201);
 }
