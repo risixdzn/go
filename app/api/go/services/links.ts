@@ -12,13 +12,15 @@ export async function getLinkBySlug({ slug }: { slug: string }) {
 
     console.log(slug);
 
-    const link = linkSchema.parse(
-        await prisma.link.findUnique({
-            where: {
-                slug,
-            },
-        })
-    );
+    const raw = await prisma.link.findUnique({
+        where: {
+            slug,
+        },
+    });
+
+    if (!raw) return null;
+
+    const link = linkSchema.parse(raw);
 
     await redis.set(key, JSON.stringify(link), "EX", CACHE_TTL);
 

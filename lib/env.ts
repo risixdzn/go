@@ -6,6 +6,7 @@ const envSchema = z.object({
 
     DATABASE_URL: z.string().url(),
     REDIS_URL: z.string().url(),
+    REDIS_TLS: z.enum(["true", "false"]).optional(),
 
     SIGNUP_MODE: z.enum(["public", "restricted"]),
     WHITELIST_EMAILS: z.string().optional(),
